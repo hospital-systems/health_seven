@@ -84,11 +84,11 @@ module HealthSeven
        end
 
        rule delim
-   "\\r"
+         "#{13.chr}" 
        end
 
        rule not_delim
-   [^"\\r"]
+   [^#{13.chr}]
        end
 
        rule payload
