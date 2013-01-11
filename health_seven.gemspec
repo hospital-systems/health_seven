@@ -1,5 +1,5 @@
 # Version numbering: http://wiki.github.com/sandal/prawn/development-roadmap
-HEALTH_SEVEN_VERSION = "0.0.1"
+HEALTH_SEVEN_VERSION = "0.0.2"
 
 Gem::Specification.new do |spec|
   spec.name = "health_seven"
@@ -16,7 +16,6 @@ Gem::Specification.new do |spec|
   spec.authors = ["Nikolay Ryzhikov", "Dmitry Rybakov"]
   spec.email = ["niquola@gmail.com"]
   spec.add_dependency('treetop')
-  spec.add_dependency('ttfunk', '~>1.0.0')
   spec.description = 'Ruby library for HL7 2.x'
   spec.post_install_message = ''
   spec.homepage = 'https://github.com/hospital-systems/health_seven'
