@@ -3,7 +3,6 @@ require 'spec_helper'
 describe HealthSeven::Message do
   class OruMessage < HealthSeven::Message
     define_message do
-      msh
       pid
       pv1?
       orc {

@@ -1,9 +1,6 @@
-# Version numbering: http://wiki.github.com/sandal/prawn/development-roadmap
-HEALTH_SEVEN_VERSION = "0.0.2"
-
 Gem::Specification.new do |spec|
   spec.name = "health_seven"
-  spec.version = HEALTH_SEVEN_VERSION
+  spec.version = "0.0.3"
   spec.platform = Gem::Platform::RUBY
   spec.summary = "Ruby library for hl7 2.x"
   spec.files =  Dir.glob("{lib,spec}/**/**/*") +

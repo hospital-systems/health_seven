@@ -3,7 +3,6 @@ require 'spec_helper'
 describe HealthSeven::Message do
   class AdmitMessage < HealthSeven::Message
     define_message do
-      msh
       evn
       pid
       nk1

@@ -48,7 +48,7 @@ module HealthSeven
         gramar.push <<-RULE
 
        rule #{self.rule_name}
-       #{seg_name} payload delim #{_children_enum.join(" ")} <HealthSeven::SegmentLiteral>
+         #{seg_name} payload delim #{_children_enum.join(" ")} <HealthSeven::SegmentLiteral>
        end
        RULE
 
@@ -75,24 +75,52 @@ module HealthSeven
         end
       end
     end
+
     class MessageDef < SegmentDef
+      def _children_enum
+        @segments.map do |s|
+          s.dsl_off!
+          s.rule_name
+        end
+      end
+
+      def optional
+        @optional ||= @segments.map do |s|
+          s.rule_name if s.optional?
+        end.compact
+      end
+
+      def required
+        @reqired ||= @segments.map do |s|
+          s.rule_name unless s.optional?
+        end.compact
+      end
+
       def to_gramar(gramar)
         gramar.push <<-RULE
 
        rule message
-        #{_children_enum.join(" ")} "\\n" <HealthSeven::SegmentLiteral>
+         msh segment* "\\n" <HealthSeven::SegmentLiteral>
+       end
+
+       rule segment
+         #{_children_enum.join(" / ")}
        end
 
        rule delim
-         "#{13.chr}" 
+         "#{13.chr}"
        end
 
        rule not_delim
-   [^#{13.chr}]
+         [^#{13.chr}]
        end
 
        rule payload
-   not_delim+ <HealthSeven::FieldsLiteral>
+         not_delim+ <HealthSeven::FieldsLiteral>
+       end
+
+       rule msh
+         'MSH' payload delim  <HealthSeven::SegmentLiteral>
        end
         RULE
 
@@ -181,7 +209,9 @@ module HealthSeven
         raise HealthSeven::BadGrammarException, message
       end
       msg = Message.new
+      @required_segments = Object.const_get("#{self.name}").message_def.required
       self.clean_tree(ast_tree, msg)
+      raise "No required segment(s) found: #{@required_segments.join(', ')}" unless @required_segments.empty?
 
       msg
     end
@@ -193,6 +223,7 @@ module HealthSeven
 
       segment.name = node.name
       segment.fields = node.fields
+      @required_segments.delete(node.name.downcase)
 
       return true unless node.elements
       node.elements.each do |e|

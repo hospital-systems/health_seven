@@ -3,7 +3,6 @@ require 'spec_helper'
 describe HealthSeven::Message do
   class DiagnosesMessage < HealthSeven::Message
     define_message do
-      msh
       evn
       pid
       pv1?
