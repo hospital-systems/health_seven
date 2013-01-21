@@ -37,4 +37,11 @@ describe HealthSeven::Message do
       error.message.should =~ 'IN2'
     end
   end
+
+  it 'should not raise an exception in case of incorrect order of top level segments' do
+    -> {
+      msg = AdmitMessage.parse(load_message('disordered_admit'))
+    }.should_not raise_error
+
+  end
 end
